@@ -8,3 +8,7 @@ aliasMaker add|delete alias command
 ```
 I suppose you name the alias to this script = "aliasMaker"
 
+use list to list all aliases
+```
+aliasMaker list
+```
