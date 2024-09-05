@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Check if the correct number of arguments is provided
-if [ "$#" -lt 2 ]; then
-  echo "Usage: $0 <add|delete> <alias_name> [alias_command]"
+if [ "$#" -lt 1 ]; then
+  echo "Usage: $0 <add|delete|list> <alias_name> [alias_command]"
   exit 1
 fi
 
@@ -43,6 +43,12 @@ delete_alias() {
   fi
 }
 
+# Function to list all aliases
+list_aliases() {
+  echo "Listing all aliases in $BASHRC_FILE:"
+  grep "^alias " "$BASHRC_FILE"
+}
+
 # Handle the action based on the first argument
 case "$ACTION" in
 add)
@@ -55,12 +61,17 @@ add)
 delete)
   delete_alias
   ;;
+list)
+  list_aliases
+  ;;
 *)
-  echo "Invalid action: $ACTION. Use 'add' or 'delete'."
+  echo "Invalid action: $ACTION. Use 'add', 'delete', or 'list'."
   exit 1
   ;;
 esac
 
-# Source the .bashrc file to apply the changes
-source "$BASHRC_FILE"
-echo ".bashrc has been sourced. Changes applied."
+# Source the .bashrc file to apply the changes (only for add or delete actions)
+if [[ "$ACTION" == "add" || "$ACTION" == "delete" ]]; then
+  source "$BASHRC_FILE"
+  echo ".bashrc has been sourced. Changes applied."
+fi
